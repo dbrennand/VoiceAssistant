@@ -6,6 +6,7 @@ try:
     import webbrowser
     from requests import post, get
     from base64 import b64encode
+    import pprint
 except ImportError as err:
     print(f"Import Error: {err}")
 
@@ -66,14 +67,20 @@ class voice_assistant:
         return resp.json()
 
     def get_track(self, json_resp, voice_input):
-        remove_play = voice_input.replace("play", "")
-        track_artist = remove_play.split("by")
+        # Replace "play" with "" and split on "by"
+        track_artist = voice_input.replace("play", "").split("by")
+        # Remove leading and trailing " "
+        track_artist = [item.strip(" ") for item in track_artist]
+        # If a space found for track or artist str's (in track_artist), replace with a "+".
+        # Required by Spotify API.
+        track_artist = [item.replace(" ", "+") for item in track_artist]
+        print(track_artist)
+        endpoint = f"https://api.spotify.com/v1/search?q=track:{track_artist[0]}+artist:{track_artist[1]}&type=track&market=GB&limit=1"
+        print(endpoint)
         token = json_resp["access_token"]
-        endpoint = f"https://api.spotify.com/v1/search?q={track_artist[0]}+artist:{track_artist[1]}&type=track"
         headers = {"Authorization": f"Bearer {token}"}
         resp = get(endpoint, headers=headers)
-        print(resp.json())
-        #endpoint = f"https://api.spotify.com/v1/search?q=track:{track_artist[0]}%20artist:{track_artist[1]}&type=track"
+        pprint.pprint(resp.json())
 
     def assistant_handle(self, voice_input):
         try:
@@ -84,7 +91,7 @@ class voice_assistant:
             elif (("play") in (voice_input)):
                 self.get_track(self.spotify_auth(
                     self.client_id, self.client_secret), voice_input)
-                # play god is a woman by ariana grande
+                # play best life by Hardy Caprio
             else:
                 self.assistant_speak("Sorry, I do not know that command.")
         except TypeError:
