@@ -6,7 +6,6 @@ try:
     import webbrowser
     from requests import post, get
     from base64 import b64encode
-    import pprint
 except ImportError as err:
     print(f"Import Error: {err}")
 
@@ -16,8 +15,8 @@ class voice_assistant:
     def __init__(self):
         self.recognizer = sr.Recognizer()
         self.microphone = sr.Microphone()
-        self.client_id = ""
-        self.client_secret = ""
+        self.client_id = "Insert Your Key Here."
+        self.client_secret = "Insert Your Key Here."
 
     def capture(self):
         try:
@@ -73,25 +72,27 @@ class voice_assistant:
         track_artist = [item.strip(" ") for item in track_artist]
         # If a space found for track or artist str's (in track_artist), replace with a "+".
         # Required by Spotify API.
-        track_artist = [item.replace(" ", "+") for item in track_artist]
-        print(track_artist)
-        endpoint = f"https://api.spotify.com/v1/search?q=track:{track_artist[0]}+artist:{track_artist[1]}&type=track&market=GB&limit=1"
-        print(endpoint)
+        track_artist_url = [item.replace(" ", "+") for item in track_artist]
+        # Pass track_artist[0]: Track name, track_artist[1]: Artist name as endpoint request.
+        endpoint = f"https://api.spotify.com/v1/search?q=track:{track_artist_url[0]}+artist:{track_artist_url[1]}&type=track&market=GB&limit=1"
         token = json_resp["access_token"]
         headers = {"Authorization": f"Bearer {token}"}
-        resp = get(endpoint, headers=headers)
-        pprint.pprint(resp.json())
+        resp = get(endpoint, headers=headers).json()
+        for item, track in enumerate(resp["tracks"]["items"]):
+            # Gets track url from spotify dict returned.
+            url = track["external_urls"]["spotify"]
+            self.assistant_speak(f"Playing {track_artist[0]} by {track_artist[1]}")
+            webbrowser.open(url)
 
     def assistant_handle(self, voice_input):
         try:
             if (("search") in (voice_input)):
                 self.duck_search(voice_input)
-            elif (("time") in (voice_input)):
+            elif (("time") in (voice_input)) or (("date") in (voice_input)):
                 self.assistant_speak(f"The time and date is {ctime()}")
             elif (("play") in (voice_input)):
                 self.get_track(self.spotify_auth(
                     self.client_id, self.client_secret), voice_input)
-                # play best life by Hardy Caprio
             else:
                 self.assistant_speak("Sorry, I do not know that command.")
         except TypeError:
