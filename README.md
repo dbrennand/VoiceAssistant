@@ -13,6 +13,8 @@ A Simple voice assistant.
 ## Dependancies
 [voiceassistant.py](voiceassistant.py) is written in python 3 so its **REQUIRED**
 
+* Tested on MacOS.
+
 It requires the following packages:
 
 1. gTTs
