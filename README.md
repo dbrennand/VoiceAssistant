@@ -13,14 +13,14 @@ A Simple voice assistant.
 ## Dependancies
 [voiceassistant.py](voiceassistant.py) is written in python 3 so its **REQUIRED**
 
-* Tested on MacOS.
-
 It requires the following packages:
 
 1. gTTs
 2. speech_recognition
 3. PyAudio
 4. Requests
+
+* Tested on MacOS.
 
 ## Prerequisites
 To use the search track feature you must:
