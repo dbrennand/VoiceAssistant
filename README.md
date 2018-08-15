@@ -9,6 +9,8 @@ A Simple voice assistant.
     Example: "What is the time?" or "What is the date?"
 * Search for a track from spotify:
     Example: "Play Best Life by Hardy Caprio"
+* Search Google Maps for a location:
+    Example: "locate London Eye"
 
 ## Dependancies
 [voiceassistant.py](voiceassistant.py) is written in python 3 so its **REQUIRED**

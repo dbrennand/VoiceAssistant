@@ -41,11 +41,10 @@ class voice_assistant:
         Popen(["afplay", "audio.mp3"])
 
     def duck_search(self, voice_input):
-        data = voice_input.split("search")
-        search_query = str(data[1])
-        self.assistant_speak(f"Searching DuckDuckgo for {search_query}")
+        data = voice_input.split("search")[1]
+        self.assistant_speak(f"Searching DuckDuckgo for {data}")
         webbrowser.open(
-            f"https://duckduckgo.com/?q={search_query}")
+            f"https://duckduckgo.com/?q={data}")
 
     def spotify_auth(self, client_id, client_secret):
         joined_str = f"{client_id}:{client_secret}"
@@ -83,6 +82,12 @@ class voice_assistant:
             url = track["external_urls"]["spotify"]
             self.assistant_speak(f"Playing {track_artist[0]} by {track_artist[1]}")
             webbrowser.open(url)
+    
+    def maps_locate(self, voice_input):
+        data = voice_input.split("locate")[1]
+        place = data.replace(" ", "+")
+        self.assistant_speak(f"Searching Google Maps for {data}")
+        webbrowser.open(f"https://www.google.com/maps?q={place}")
 
     def assistant_handle(self, voice_input):
         try:
@@ -93,6 +98,8 @@ class voice_assistant:
             elif (("play") in (voice_input)):
                 self.get_track(self.spotify_auth(
                     self.client_id, self.client_secret), voice_input)
+            elif (("locate") in (voice_input)):
+                self.maps_locate(voice_input)
             else:
                 self.assistant_speak("Sorry, I do not know that command.")
         except TypeError:
