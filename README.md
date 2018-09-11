@@ -22,6 +22,11 @@ It requires the following packages:
 3. PyAudio
 4. Requests
 
+Install using the command:
+```
+pip3 install -r requirements.txt
+```
+
 * Tested on MacOS.
 
 ## Prerequisites
