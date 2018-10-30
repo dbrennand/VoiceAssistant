@@ -8,4 +8,4 @@ SpeechRecognition == 3.8.1
 gTTS == 2.0.1
 
 # voiceassistant.py: 7
-requests == 2.18.4
+requests == 2.20.0
