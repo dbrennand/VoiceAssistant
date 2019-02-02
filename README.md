@@ -22,9 +22,14 @@ It requires the following packages:
 3. PyAudio
 4. Requests
 
-Install using the command:
+Install dependancy for PyAudio using:
 ```
-pip3 install -r requirements.txt
+brew install portaudio
+```
+
+Install Python dependancies using the command:
+```
+pipenv install
 ```
 
 * Tested on MacOS.
